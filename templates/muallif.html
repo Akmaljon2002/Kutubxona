@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tanlangan muallif</title>
+</head>
+<body>
+  <h1>Tanlangan muallif batafsil malumoti: </h1>
+  <br>
+  <hr>
+  <br>
+  <a href="/">Bosh menu</a>
+  <br>
+  <hr>
+  <br>
+  <h2>{{muallif.id}}. {{muallif.ism}}</h2>
+  <br>
+  <h2>Tug'ilgan yili: {{muallif.tugilgan_yili}}</h2>
+  <hr>
+  <br>
+  {% if muallif.tirik %}
+  <h2>Ijod qilmoqda</h2>
+  {% else %}
+  <h2>Olamdan o'tgan</h2>
+  {% endif %}
+  <br>
+  <h2>Jinsi: {{muallif.jins}}</h2>
+  <br>
+  <h2>Kitoblar soni: {{muallif.kitob_soni}}</h2>
+  <button type="submit" ><a href="/muallif_ochirish/{{muallif.id}}/">O'chirish</a></button>
+
+  <form method="post"> {% csrf_token %}
+    <label>Ism: </label>
+    <input type="text" name="i" value="{{muallif.ism}}">
+    <br>
+    <br>
+    <label>Tug'ilgan yili: </label>
+    <input type="date" name="t_y" value="{{muallif.tugilgan_yili}}">
+    <br>
+    <br>
+    <label>Kitob soni: </label>
+    <input type="number" name="k_s" value="{{muallif.kitob_soni}}">
+    <br>
+    <br>
+    <label>Tirik</label>
+    {% if muallif.tirik %}
+    <input type="checkbox" name="t" checked>
+    {% else %}
+    <input type="checkbox" name="t">
+    {% endif %}
+    <select name="j">
+      <option value="{{muallif.jins}}">{{muallif.jins}}</option>
+      {% for i in jins %}
+      {% if i != muallif.jins %}
+      <option value="{{i}}">{{i}}</option>
+      {% endif %}
+      {% endfor %}
+    </select>
+    <button type="submit">Yangilash</button>
+    <a href="/mualliflar/"><button>Orqaga</button></a>
+  </form>
+
+</body>
+</html>

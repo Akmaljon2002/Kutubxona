@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kitoblar</title>
+</head>
+<body>
+  <h1>Kutubxona tizimidagi barcha kitoblar: </h1>
+  <br>
+  <form method="get">
+      <input type="text" name="kitob_qidirish">
+      <button type="submit">Qidirish</button>
+      <a href="/">Bosh menu</a>
+
+  </form>
+  <hr>
+  <br>
+  {% for kitob in kitoblar %}
+  <h2>{{kitob.id}}. <a href="/kitob/{{kitob.id}}/">{{kitob.nom}}</a></h2>
+  {% endfor %}
+    <form action="/kitoblar/" method="post"> {% csrf_token %}
+        {{kitob.as_p}}
+        <button type="submit">Qo'shish</button>
+    </form>
+
+</body>
+</html>

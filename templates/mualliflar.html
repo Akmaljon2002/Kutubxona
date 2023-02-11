@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mualliflar: </title>
+</head>
+<body>
+  <h1>Kutubxona tizimidagi barcha mualliflar: </h1>
+  <br>
+  <hr>
+  <br>
+  <form method="get">
+      <input type="text" name="muallif_qidirish">
+      <button type="submit">Qidirish</button>
+      <a href="/">Bosh menu</a>
+
+  </form>
+  <br>
+  {% for muallif in mualliflar %}
+  <h3>{{ muallif.id }}. <a href="/muallif/{{muallif.id}}/">{{muallif.ism}}</a></h3>
+  {% endfor %}
+    <form action="/mualliflar/" method="post"> {% csrf_token %}
+        {{muallif.as_p}}
+        <button type="submit">Qo'shish</button>
+    </form>
+
+</body>
+</html>

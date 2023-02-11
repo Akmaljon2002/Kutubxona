@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Adminlar</title>
+</head>
+<body>
+  <h1>Kutubxona tizimidagi barcha adminlar: </h1>
+  <br>
+  <form method="get">{% csrf_token %}
+      <input type="text" name="admin_qidirish">
+      <button type="submit">Qidirish</button>
+      <a href="/">Bosh menu</a>
+
+  </form>
+  <hr>
+  <br>
+  {% for admin in adminlar %}
+  <h2>{{admin.id}}. <a href="/admins/{{admin.id}}/">{{admin.ism}}</a></h2>
+  {% endfor %}
+
+    <form action="/adminlar/" method="post">{% csrf_token %}
+        {{admin.as_p}}
+        <button type="submit">Qo'shish</button>
+    </form>
+</body>
+</html>

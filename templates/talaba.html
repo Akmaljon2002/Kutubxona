@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Talaba</title>
+</head>
+<body>
+<!--  <h1>Tanlangan talaba batafsil malumoti: </h1>-->
+<!--  <br>-->
+<!--  <hr>-->
+<!--  <a href="/">Bosh menu</a>-->
+<!--  <hr>-->
+<!--  <br>-->
+<!--  <h2>{{talaba.id}}. {{talaba.ism}}</h2>-->
+<!--  <br>-->
+<!--  <h2>Kitob soni: {{talaba.kitob_soni}}</h2>-->
+<!--  <br>-->
+<!--  <h2>Kurs: {{talaba.kurs}}</h2>-->
+<!--  <br>-->
+<!--  {% if talaba.bitiruvchi %}-->
+<!--  <h2>O'qishni tamomlamoqda</h2>-->
+<!--  {% else %}-->
+<!--  <h2>O'qimoqda</h2>-->
+<!--  {% endif %}-->
+  <br>
+  <button type="submit" ><a href="/talaba_ochirish/{{talaba.id}}/">O'chirish</a></button>
+
+  <hr>
+    <br>
+    <form method="post">{% csrf_token %}
+        <label>Ism: </label>
+        <input type="text" name="i" value="{{talaba.ism}}">
+        <br>
+        <br>
+        <label>Kurs: </label>
+        <input type="number" name="k" value="{{talaba.kurs}}">
+        <br>
+        <br>
+        <label>Kitob soni: </label>
+        <input type="number" name="k_s" value="{{talaba.kitob_soni}}">
+        <br>
+        <br>
+        <label>Bitiruvchi: </label>
+        {% if talaba.bitiruvchi %}
+        <input type="checkbox" name="b" checked>
+        {% else %}
+        <input type="checkbox" name="b" >
+        {% endif %}
+        <button type="submit">Yangilash</button>
+        <a href="/talabalar/"><button>Orqaga</button></a>
+    </form>
+</body>
+</html>

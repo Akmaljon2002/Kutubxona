@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tanlangan record</title>
+</head>
+<body>
+  <h1>Tanlangan record haqida batafsil malumot: </h1>
+  <br>
+  <hr>
+  <a href="/">Bosh menu</a>
+  <hr>
+  <h3>{{record.id}}.</h3>
+  <h3>Talaba: {{record.talaba.ism}}</h3>
+  <h3>Kitob: {{record.kitob.nom}}</h3>
+  <h3>Admin: {{record.admin.ism}}</h3>
+  <h3>Olingan sana: {{record.olingan_sana}}</h3>
+  {% if record.qaytardi %}
+  <h3>O'qilyapti</h3>
+  {% else %}
+  <h3>Qaytarib berilgan</h3>
+  {% endif %}
+  <h3>Qaytargan sana: {{record.qaytargan_sana}}</h3>
+  <button type="submit" ><a href="/record_ochirish/{{record.id}}/">O'chirish</a></button>
+  <br>
+  <hr>
+  <h2>Tahrirlash</h2>
+  <hr>
+  <form method="post">{% csrf_token %}
+    <label>Qaytardi: </label>
+    {% if record.qaytardi %}
+    <input type="checkbox" name="q" checked>
+    {% else %}
+    <input type="checkbox" name="q">
+    {% endif %}
+    <label>Qaytargan sana: </label>
+    <input type="date" name="q_sana" value="{{record.qaytargan_sana}}">
+    <br>
+    <br>
+    <button type="submit">Yangilash</button>
+    <a href="/recordlar/"><button>Orqaga</button></a>
+  </form>
+</body>
+</html>

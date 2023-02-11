@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+</head>
+<body>
+  <h1>Tanlangan admin batafsil malumoti: </h1>
+  <br>
+  <hr>
+  <a href="/">Bosh menu</a>
+  <hr>
+  <br>
+  <h2>{{admin.id}}. {{admin.ism}}</h2>
+  <br>
+  <h2>Ish vaqti: {{admin.ish_vaqti}}</h2>
+  <br>
+  <button type="submit" ><a href="/admin_ochirish/{{admin.id}}/">O'chirish</a></button>
+
+  <hr>
+  <br>
+  <form method="post">{% csrf_token %}
+    <label>Ism: </label>
+    <input type="text" name="i" value="{{admin.ism}}">
+    <br>
+    <br>
+    <label>Ish vaqti: </label>
+    <select name="i_v">
+      <option value="{{admin.ish_vaqti}}">{{admin.ish_vaqti}}</option>
+      {% for i in ish_vaqtlari %}
+      {% if i != admin.ish_vaqti %}
+      <option value="{{i}}">{{i}}</option>
+      {% endif %}
+      {% endfor %}
+    </select>
+    <br>
+    <br>
+    <button type="submit">Yangilash</button>
+    <a href="/kitoblar/"><button>Orqaga</button></a  </form>
+</body>
+</html>

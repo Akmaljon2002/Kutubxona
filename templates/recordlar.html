@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recordlar</title>
+</head>
+<body>
+  <h1>Kutubxona tizimidagi barcha recordlar: </h1>
+  <br>
+  <hr>
+  <br>
+  <form method="get">
+      <input type="text" name="record_qidirish">
+      <button type="submit">Qidirish</button>
+      <a href="/">Bosh menu</a>
+  </form>
+  <br>
+  <hr>
+  {% for record in recordlar %}
+  <h3><a href="/record/{{record.id}}/"> {{record.talaba.ism}}</a>({{record.kitob.nom}}) </h3>
+  {% endfor %}
+  <hr>
+  <h2>Yangi record qo'shish</h2>
+    <form action="/recordlar/" method="post"> {% csrf_token %}
+        {{record.as_p}}
+        <button type="submit">Qo'shish</button>
+    </form>
+
+</body>
+</html>
