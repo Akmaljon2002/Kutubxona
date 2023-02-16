@@ -1,10 +1,46 @@
 from django.http import HttpResponse
+from django.views import View
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from .models import *
 from.forms import *
 
+
 def bosh_sahifa(request):
     return render(request, 'bosh_sahifa.html')
+
+# 1
+class LoginView(View):
+    def post(self, request):
+        user = authenticate(
+            username = request.POST.get('l'),
+            password = request.POST.get('p')
+        )
+        if user is None:
+            return redirect("/")
+        login(request, user)
+        return redirect("/home/")
+    def get(self, request):
+        return render(request, 'login.html')
+
+
+
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        return redirect("/")
+#
+class RegisterView(View):
+    def post(self, request):
+        if request.POST.get('p') == request.POST.get('cp'):
+            User.objects.create_user(
+                username = request.POST.get('l'),
+                password = request.POST.get('p')
+            )
+        return redirect("/")
+    def get(self, request):
+        return render(request, 'register.html')
 ########################################################################################################################
 def talabalar(request):
     if request.method == "POST":
@@ -65,26 +101,28 @@ def kitoblar(request):
     }
     return render(request, 'kitoblar.html', data)
 
-# 2
+#
 def recordlar(request):
-    if request.method == "POST":
-        form = RecordForm(request.POST)
-        if form.is_valid():
-            form.save()
-        return redirect("/recordlar/")
-    soz = request.GET.get('record_qidirish')
-    if soz is None:
-        record = Record.objects.all()
-    else:
-        record = Record.objects.filter(talaba__ism__contains=soz)
-    data = {
-        "recordlar":record,
-        "talabalar":Talaba.objects.all(),
-        "kitoblar":Kitob.objects.all(),
-        "adminlar":Admin.objects.all(),
-        "record":RecordForm()
-    }
-    return render(request, 'recordlar.html', data)
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            form = RecordForm(request.POST)
+            if form.is_valid():
+                form.save()
+            return redirect("/recordlar/")
+        soz = request.GET.get('record_qidirish')
+        if soz is None:
+            record = Record.objects.all()
+        else:
+            record = Record.objects.filter(talaba__ism__contains=soz)
+        data = {
+            "recordlar":record,
+            "talabalar":Talaba.objects.all(),
+            "kitoblar":Kitob.objects.all(),
+            "adminlar":Admin.objects.all(),
+            "record":RecordForm()
+        }
+        return render(request, 'recordlar.html', data)
+    return redirect("/home/")
 
 # 3
 def adminlar(request):
@@ -163,20 +201,22 @@ def kitob(request, son):
 
 # 3
 def record(request, son):
-    if request.method == "POST":
-        if request.POST.get('q') == 'on':
-            qiymat = True
-        else:
-            qiymat = False
-        Record.objects.filter(id=son).update(
-            qaytardi = qiymat,
-            qaytargan_sana = request.POST.get('q_sana')
-        )
-        return redirect("/recordlar/")
-    data = {
-        "record":Record.objects.get(id=son)
-    }
-    return render(request, 'record.html', data)
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            if request.POST.get('q') == 'on':
+                qiymat = True
+            else:
+                qiymat = False
+            Record.objects.filter(id=son).update(
+                qaytardi = qiymat,
+                qaytargan_sana = request.POST.get('q_sana')
+            )
+            return redirect("/recordlar/")
+        data = {
+            "record":Record.objects.get(id=son)
+        }
+        return render(request, 'record.html', data)
+    return redirect("/home")
 
 #
 def admins(request, son):
@@ -211,10 +251,12 @@ def kitob_ochirish(request, son):
     return redirect('/kitoblar/')
 
 def record_ochirish(request, son):
-    record = Record.objects.get(id=son)
-    record.delete()
+    if request.user.is_authenticated:
+        record = Record.objects.get(id=son)
+        record.delete()
 
-    return redirect('/recordlar/')
+        return redirect('/recordlar/')
+    return redirect("/")
 
 def admin_ochirish(request, son):
     admin = Admin.objects.get(id=son)
